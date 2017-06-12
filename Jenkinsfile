@@ -1,16 +1,34 @@
 node {
-   stage('Checkout') {
-      emailext body: '$DEFAULT_CONTENT', replyTo: '$DEFAULT_REPLYTO', subject: '$DEFAULT_SUBJECT', to: '$DEFAULT_RECIPIENTS'
-      checkout scm
+   stages {
+      stage('Checkout') {
+         emailext body: '$DEFAULT_CONTENT', 
+            replyTo: '$DEFAULT_REPLYTO', 
+            subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', 
+            to: '$DEFAULT_RECIPIENTS'
+         checkout scm
+      }
+      stage('Build') {
+         sh "ls -la"
+         sh "./gradlew clean build"
+      }
+      stage('Results') {
+         junit '**/test-results/test/TEST-*.xml'       
+      }
    }
-   stage('Build') {
-      sh "ls -la"
-      sh "./gradlew clean build"
-   }
-   stage('Results') {
-      junit '**/test-results/test/TEST-*.xml'       
-   }
-   stage('Done') {
-        emailext body: '$DEFAULT_CONTENT', replyTo: '$DEFAULT_REPLYTO', subject: '$DEFAULT_SUBJECT', to: '$DEFAULT_RECIPIENTS'       
+   
+   post {
+        success {
+            emailext body: '$DEFAULT_POSTSEND_SCRIPT', 
+               replyTo: '$DEFAULT_REPLYTO', 
+               subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - SUCCESSFUL!', 
+               to: '$DEFAULT_RECIPIENTS'
+        }
+        
+        failure {
+            emailext body: '$DEFAULT_POSTSEND_SCRIPT', 
+               replyTo: '$DEFAULT_REPLYTO', 
+               subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - FAILURE!', 
+               to: '$DEFAULT_RECIPIENTS'
+        }
    }
 }
