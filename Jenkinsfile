@@ -1,5 +1,6 @@
 node {
    stage('Build') {
+      sh "ls -la"
       sh "./gradlew clean build"
    }
    stage('Results') {
