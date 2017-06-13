@@ -24,7 +24,7 @@ pipeline {
     }
     post {
        success {
-            emailext body: 'Logs: \n\n$currentBuild.rawBuild.log', 
+            emailext body: 'Logs: \n\n${env.currentBuild.rawBuild}', 
                replyTo: '$DEFAULT_REPLYTO', 
                subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - SUCCESSFUL!', 
                to: '$DEFAULT_RECIPIENTS'
