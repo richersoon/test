@@ -3,13 +3,17 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                checkout scm
+                GIT_COMMIT = sh (
+                    script: 'git rev-parse HEAD',
+                    returnStdout: true
+                ).trim()
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
-                    body: '$DEFAULT_CONTENT',               
+                    body: '$GIT_COMMIT',               
                     mimeType: 'text/html',
                 )
-                checkout scm
             }
         }
         stage('Build') {
@@ -19,16 +23,11 @@ pipeline {
         }
     }
     post {
-        success {
-          GIT_COMMIT = sh (
-                    script: 'git rev-parse HEAD',
-                    returnStdout: true
-                ).trim()
-            
+        success {  
           emailext (
             subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
-            body: "${GIT_COMMIT}",  
+            body: '',  
             attachLog: true           
           )
         }
