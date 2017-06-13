@@ -14,7 +14,7 @@ pipeline {
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
-                    body: '${GIT_COMMIT}',               
+                    body: "${GIT_COMMIT}",               
                     mimeType: 'text/html',
                 )
            }
