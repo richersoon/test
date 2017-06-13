@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 emailext (
-                    subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!'",
+                    subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
                     body: '$DEFAULT_CONTENT',               
                     mimeType: 'text/html',
@@ -27,7 +27,7 @@ pipeline {
     post {
         success {           
           emailext (
-            subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!'",
+            subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
             body: '',  
             attachLog: true           
@@ -36,7 +36,7 @@ pipeline {
 
         failure {
           emailext (
-            subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!'",
+            subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider', $class: 'FailingTestSuspectsRecipientProvider']],  
             body: '',
             attachLog: true            
