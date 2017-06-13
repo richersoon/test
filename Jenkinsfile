@@ -12,7 +12,7 @@ pipeline {
                 }  
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
-                    recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
+                    recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                     body: "The following are the changes\n\n ${GIT_COMMIT}"
                 )
            }
@@ -27,7 +27,7 @@ pipeline {
         success {  
           emailext (
             subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
-            recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
+            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
             body: '',  
             attachLog: true           
           )
@@ -36,7 +36,7 @@ pipeline {
         failure {
           emailext (
             subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
-            recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider', $class: 'FailingTestSuspectsRecipientProvider']],  
+            recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider'], [$class: 'FailingTestSuspectsRecipientProvider']],  
             body: '',
             attachLog: true            
           )
