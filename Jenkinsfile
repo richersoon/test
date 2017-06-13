@@ -3,10 +3,12 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                emailext body: '$DEFAULT_CONTENT', 
-                    replyTo: '$DEFAULT_REPLYTO', 
-                    subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', 
-                    to: '$DEFAULT_RECIPIENTS'
+                emailext (
+                    subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!'",
+                    recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
+                    body: '$DEFAULT_CONTENT',               
+                    mimeType: 'text/html',
+                )
                 checkout scm
             }
         }
@@ -25,23 +27,17 @@ pipeline {
     post {
         success {           
           emailext (
-            subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-            mimeType: 'text/html',
-            attachLog: true,  
-            body: """<p>SUCCESSFUL: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]:</p>
-            <p>Check console output at ${env.BUILD_URL}</p>""",
-            recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']]
+            subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!'",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
+            attachLog: true           
           )
         }
 
         failure {
           emailext (
-            subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
-            mimeType: 'text/html',  
-            attachLog: true,  
-            body: """<p>FAILED: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]:</p>
-            <p>Check console output at ${env.BUILD_URL}</p>""",
-            recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider', $class: 'FailingTestSuspectsRecipientProvider']]
+            subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!'",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider', $class: 'FailingTestSuspectsRecipientProvider']],  
+            attachLog: true            
           )
         }
     }
