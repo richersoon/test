@@ -28,7 +28,7 @@ pipeline {
             subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
             mimeType: 'text/html',  
             body: """<p>SUCCESSFUL: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]:</p>
-            <p>Check console output at ${BUILD_LOG_REGEX, regex="^.*?BUILD FAILED.*?$", linesBefore=0, linesAfter=10, maxMatches=5, showTruncatedLines=false, escapeHtml=true}</p>""",
+            <p>Check console output at ${BUILD_LOG_REGEX}</p>""",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']]
           )
         }
