@@ -13,6 +13,7 @@ pipeline {
                 
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
+                    to: "richersoon@gmail.com",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                     body: "The following are the changes\n\n ${GIT_COMMIT}"
                 )
