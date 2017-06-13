@@ -9,7 +9,8 @@ pipeline {
                         script: 'git diff HEAD^ HEAD',
                         returnStdout: true
                     ).trim()
-                }  
+                }
+                
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
