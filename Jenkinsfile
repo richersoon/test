@@ -19,11 +19,16 @@ pipeline {
         }
     }
     post {
-        success {           
+        success {
+          GIT_COMMIT = sh (
+                    script: 'git rev-parse HEAD',
+                    returnStdout: true
+                ).trim()
+            
           emailext (
             subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
-            body: '',  
+            body: "${GIT_COMMIT}",  
             attachLog: true           
           )
         }
