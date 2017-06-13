@@ -2,15 +2,22 @@ pipeline {
     agent any
     stages {
         stage('Checkout') {
-           
+             
+            steps {
                 checkout scm
+                script {
+                    GIT_COMMIT = sh (
+                        script: 'git rev-parse HEAD',
+                        returnStdout: true
+                    ).trim()
+                }  
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
-                    body: '$GIT_COMMIT',               
+                    body: '${GIT_COMMIT}',               
                     mimeType: 'text/html',
                 )
-            
+           }
         }
         stage('Build') {
             steps {
