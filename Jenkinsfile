@@ -4,10 +4,11 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                GIT_COMMIT = sh (
+                def GIT_COMMIT = sh (
                     script: 'git rev-parse HEAD',
                     returnStdout: true
                 ).trim()
+                
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
