@@ -23,18 +23,22 @@ pipeline {
         }
     }
     post {
-       success {
-            emailext body: "Logs: \n\n${currentBuild.rawBuild.getLog(100)}", 
-               replyTo: '$DEFAULT_REPLYTO', 
-               subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - SUCCESSFUL!', 
-               to: '$DEFAULT_RECIPIENTS'
+        success {
+          emailext (
+            subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+            body: """<p>SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+              <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+          )
         }
-        
+
         failure {
-            emailext body: '$DEFAULT_POSTSEND_SCRIPT', 
-               replyTo: '$DEFAULT_REPLYTO', 
-               subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - FAILURE!', 
-               to: '$DEFAULT_RECIPIENTS'
+          emailext (
+            subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+            body: """<p>FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+              <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+            recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+          )
         }
     }
 }
