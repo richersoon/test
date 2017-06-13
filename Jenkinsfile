@@ -23,12 +23,14 @@ pipeline {
         }
     }
     post {
+        def test123 = currentBuild.rawBuild.log();
+        
         success {
           emailext (
             subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
             mimeType: 'text/html',  
             body: """<p>SUCCESSFUL: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]:</p>
-            <p>Check console output at ${currentBuild.rawBuild.log}</p>""",
+            <p>Check console output at ${test123}</p>""",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']]
           )
         }
