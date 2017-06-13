@@ -12,7 +12,7 @@ pipeline {
                 }  
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
-                    to: "$PROJECT_DEFAULT_RECIPIENTS",
+                    to: "${DEFAULT_RECIPIENTS}",
                     body: "The following are the changes\n\n ${GIT_COMMIT}"
                 )
            }
