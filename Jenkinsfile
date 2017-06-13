@@ -23,9 +23,9 @@ pipeline {
         }
     }
     post {
-        def test123 = currentBuild.rawBuild.log();
-        
         success {
+          def test123 = currentBuild.rawBuild.log(); 
+            
           emailext (
             subject: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
             mimeType: 'text/html',  
