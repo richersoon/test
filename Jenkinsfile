@@ -18,11 +18,6 @@ pipeline {
                 sh "./gradlew clean build"
             }
         }
-        stage('Results') {
-            steps {
-                junit '**/test-results/test/TEST-*.xml' 
-            }
-        }
     }
     post {
         success {           
