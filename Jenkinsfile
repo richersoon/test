@@ -1,9 +1,24 @@
 pipeline {
     agent any
     stages {
-        stage('No-op') {
+        stage('Checkout') {
             steps {
-                sh 'ls'
+                emailext body: '$DEFAULT_CONTENT', 
+                    replyTo: '$DEFAULT_REPLYTO', 
+                    subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', 
+                    to: '$DEFAULT_RECIPIENTS'
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh "ls -la"
+                sh "./gradlew clean build"
+            }
+        }
+        stage('Results') {
+            steps {
+                junit '**/test-results/test/TEST-*.xml' 
             }
         }
     }
