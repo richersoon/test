@@ -29,7 +29,7 @@ pipeline {
             mimeType: 'text/html',
             attachLog: true,  
             body: """<p>SUCCESSFUL: Job ${env.JOB_NAME} [${env.BUILD_NUMBER}]:</p>
-            <p>Check console output at ${env.BUILD_LOG}</p>""",
+            <p>Check console output at ${env.BUILD_URL}</p>""",
             recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']]
           )
         }
