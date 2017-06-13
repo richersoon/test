@@ -29,6 +29,7 @@ pipeline {
         success {  
           emailext (
             subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
+            to: '$DEFAULT_RECIPIENTS',
             recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
             body: '',  
             attachLog: true           
@@ -38,6 +39,7 @@ pipeline {
         failure {
           emailext (
             subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Successful!",
+            to: '$DEFAULT_RECIPIENTS',
             recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider'], [$class: 'FailingTestSuspectsRecipientProvider']],  
             body: '',
             attachLog: true            
