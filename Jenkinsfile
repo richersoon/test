@@ -10,6 +10,7 @@ pipeline {
                         returnStdout: true
                     ).trim()
                 }
+                
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     to: '$DEFAULT_RECIPIENTS',
