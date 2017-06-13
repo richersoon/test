@@ -1,11 +1,5 @@
 pipeline {
     agent any
-    script {
-        GIT_DIFF2 = sh (
-            script: 'git diff HEAD^ HEAD',
-            returnStdout: true
-        ).trim()
-    }
     stages {
         stage('Checkout') {
             steps {
