@@ -2,7 +2,6 @@ pipeline {
     agent any
     stages {
         stage('Checkout') {
-             
             steps {
                 checkout scm
                 script {
@@ -14,8 +13,7 @@ pipeline {
                 emailext (
                     subject: "${env.JOB_NAME} - Build# ${env.BUILD_NUMBER} - Building!",
                     recipientProviders: [[$class: 'DevelopersRecipientProvider', $class: 'RequesterRecipientProvider']],
-                    body: "${GIT_COMMIT}",               
-                    mimeType: 'text/html',
+                    body: "${GIT_COMMIT}"
                 )
            }
         }
