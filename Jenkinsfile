@@ -23,21 +23,18 @@ pipeline {
         }
     }
     post {
-        always {
-            echo 'One way or another, I have finished'
-            deleteDir() /* clean up our workspace */
+       success {
+            emailext body: '$DEFAULT_POSTSEND_SCRIPT', 
+               replyTo: '$DEFAULT_REPLYTO', 
+               subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - SUCCESSFUL!', 
+               to: '$DEFAULT_RECIPIENTS'
         }
-        success {
-            echo 'I succeeeded!'
-        }
-        unstable {
-            echo 'I am unstable :/'
-        }
+        
         failure {
-            echo 'I failed :('
-        }
-        changed {
-            echo 'Things were different before...'
+            emailext body: '$DEFAULT_POSTSEND_SCRIPT', 
+               replyTo: '$DEFAULT_REPLYTO', 
+               subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - FAILURE!', 
+               to: '$DEFAULT_RECIPIENTS'
         }
     }
 }
