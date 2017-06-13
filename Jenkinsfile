@@ -7,7 +7,7 @@ pipeline {
                 checkout scm
                 script {
                     GIT_COMMIT = sh (
-                        script: 'git rev-parse HEAD',
+                        script: 'git diff HEAD^ HEAD',
                         returnStdout: true
                     ).trim()
                 }  
