@@ -14,7 +14,6 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "ls -la"
                 sh "./gradlew clean build"
             }
         }
