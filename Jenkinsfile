@@ -24,9 +24,7 @@ pipeline {
     }
     post {
        success {
-            emailext body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
-
-                    Check console output at $BUILD_URL to view the results.', 
+            emailext body: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS: \n Check console output at $BUILD_URL to view the results.', 
                replyTo: '$DEFAULT_REPLYTO', 
                subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - SUCCESSFUL!', 
                to: '$DEFAULT_RECIPIENTS'
